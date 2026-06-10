@@ -43,20 +43,36 @@ export default function Strategy() {
     setSaving(false)
   }
 
+  const AI_STRATEGIES = {
+    aggressive: [
+      "Deploy 80% to Aave when APY exceeds 5%. Rebalance every 24h if drift exceeds 5%. Emergency exit if ETH drops 25% in 12h.",
+      "Maximize Aave allocation up to 85% during low volatility. Harvest and compound yield daily. Hard stop-loss at 30% ETH decline.",
+      "Chase highest APY pool — reallocate if another pool exceeds current by 1.5%. Keep only 5% liquid. Emergency exit at 35% ETH drop.",
+      "Deploy 75% to Aave, keep 15% liquid buffer. Rebalance weekly unless ETH spikes 8% in 1h. Never hold more than 10% idle.",
+      "Full yield mode: 85% deployed at all times. Compound every 12h. Trigger rebalance if Aave APY drops below 3%.",
+    ],
+    balanced: [
+      "Keep 50% in Aave, 20% stablecoins, 30% liquid. Rebalance if any allocation drifts 8%. Exit to stables if ETH drops 15% in 24h.",
+      "Deploy 60% to Aave when APY above 4%. Maintain 25% stablecoin buffer. Rebalance weekly. Stop-loss at 20% ETH decline.",
+      "Split 55% Aave and 45% liquid during moderate volatility. Increase to 70% Aave when ETH stable for 48h. Exit if risk score exceeds 7.",
+      "Target 50% Aave utilization. Auto-compound yield weekly. Reduce Aave by 20% if ETH hourly volatility exceeds 5%.",
+      "45% Aave, 25% stables, 30% reserve. Rebalance monthly unless sentiment turns negative. Gradual exit over 48h if needed.",
+    ],
+    stable: [
+      "Keep 70% in stablecoins always. Deploy max 25% to Aave. Rebalance monthly. Exit Aave entirely if ETH drops 10% in 24h.",
+      "Conservative: 80% stables, 20% Aave. Only increase Aave when APY exceeds 7%. Exit all yield on any emergency signal.",
+      "Preserve capital: 65% liquid stables, 30% Aave, 5% reserve. Never chase APY above 8% risk threshold.",
+      "Deploy only 20% to Aave for baseline yield. Hold 75% in USDC. Rebalance quarterly. Exit if portfolio drops 5% in a day.",
+      "Ultra-conservative: max 15% in any yield protocol. 85% stablecoin base. Harvest monthly. Stop-loss at first protocol anomaly.",
+    ],
+  }
+  
   async function generateWithAI() {
     setGenerating(true)
-    setCustom('Generating...')
-    try {
-      const res = await fetch(`${API}/api/generate-strategy`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ preset: preset.name, stopLoss, rebalance: rebal }),
-      })
-      const data = await res.json()
-      setCustom(data.strategy)
-    } catch {
-      setCustom('Keep 60% in stablecoins during high volatility. Rebalance if drift exceeds 8%. Exit to USDC if ETH drops 15% in 24h.')
-    }
+    await new Promise(r => setTimeout(r, 600)) // small delay for UX
+    const options = AI_STRATEGIES[sel]
+    const random = options[Math.floor(Math.random() * options.length)]
+    setCustom(random)
     setGenerating(false)
   }
 
