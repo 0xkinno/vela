@@ -284,9 +284,13 @@ export default function Landing({ wallet, onEnterApp, onDisconnect }) {
           <button className="btn btn-blue btn-lg" onClick={onEnterApp}>
             Launch App →
           </button>
-          <button className="btn btn-ghost btn-lg">
-            Read the Docs
-          </button>
+          <a href="https://github.com/0xkinno/vela"
+  target="_blank"
+  rel="noopener noreferrer"
+  className="btn btn-ghost btn-lg"
+>
+  Read the Docs
+</a>
         </div>
 
         <div className="land-stats">
