@@ -130,6 +130,6 @@ server.listen(PORT, () => {
   console.log(`\n[VELA] Agent server running on http://localhost:${PORT}`);
   console.log("[VELA] WebSocket: ws://localhost:" + PORT);
   runAgentLoop();
-  setInterval(runAgentLoop, 5 * 60 * 1000);
-  setInterval(() => runSentinelCycle(broadcastAndLog), 2 * 60 * 1000);
+  setInterval(runAgentLoop, 30 * 60 * 1000);
+  setInterval(() => runSentinelCycle(broadcastAndLog), 15 * 60 * 1000);
 });
