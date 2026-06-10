@@ -154,7 +154,7 @@ Custom example:
 
 ---
 
-## Why This Wins
+## The Grand Process
 
 Most hackathon DeFi projects show a UI wired to a smart contract. VELA is different in four ways:
 
