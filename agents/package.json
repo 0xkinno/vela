@@ -1,0 +1,25 @@
+{
+    "name": "vela-agents",
+    "version": "1.0.0",
+    "description": "VELA AI Agent Runner",
+    "main": "index.js",
+    "type": "module",
+    "scripts": {
+      "start": "node index.js",
+      "dev": "node --watch index.js",
+      "scout": "node scout.js",
+      "allocator": "node allocator.js",
+      "sentinel": "node sentinel.js"
+    },
+    "dependencies": {
+      "groq-sdk": "^0.7.0",
+      "@zerodev/sdk": "^5.3.0",
+      "@zerodev/ecdsa-validator": "^5.3.0",
+      "viem": "^2.18.0",
+      "axios": "^1.7.0",
+      "dotenv": "^16.4.5",
+      "express": "^4.19.0",
+      "cors": "^2.8.5",
+      "ws": "^8.18.0"
+    }
+  }

@@ -1,0 +1,53 @@
+# ── Environment Variables ──
+.env
+.env.local
+.env.example
+.env.sample
+.env.development
+.env.production
+.env.test
+
+# also catch them in subfolders
+agents/.env
+agents/.env.example
+agents/.env.local
+contracts/.env
+contracts/.env.example
+contracts/.env.local
+frontend/.env
+frontend/.env.example
+frontend/.env.local
+
+# ── Node Modules (all subfolders) ──
+node_modules/
+agents/node_modules/
+contracts/node_modules/
+frontend/node_modules/
+
+# ── Hardhat artifacts ──
+contracts/artifacts/
+contracts/cache/
+artifacts/
+cache/
+
+# ── Next.js / Vite build outputs ──
+.next/
+out/
+dist/
+build/
+frontend/.next/
+frontend/out/
+frontend/dist/
+
+# ── OS files ──
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ── IDE ──
+.vscode/
+.idea/
+
+# ── Logs ──
+*.log
+npm-debug.log*
