@@ -1,3 +1,4 @@
+// frontend/agents/sentinel.js
 import "dotenv/config";
 import { askClaude } from "./lib/claude.js";
 import { buildMarketContext, getVaultMetrics } from "./lib/onchain.js";
@@ -27,33 +28,29 @@ Respond with JSON:
   "healthScore": <0-100, higher is safer>
 }`;
 
-/**
- * Price history for trend detection (in-memory for testnet demo)
- */
 const priceHistory = [];
 
-/**
- * Run one Sentinel monitoring cycle
- */
 export async function runSentinelCycle(broadcastFn = null) {
   console.log("[SENTINEL] Running risk monitoring cycle...");
 
-  const [marketData, vaultMetrics] = await Promise.all([
+  const [marketDataRaw, vaultMetrics] = await Promise.all([
     buildMarketContext(),
     getVaultMetrics(),
   ]);
 
-  // Track price history
+  // ── FALLBACK: if Chainlink feeds return undefined, use safe defaults ──
+  const marketData = {
+    ethPriceUSD:        marketDataRaw?.ethPriceUSD        ?? 3200,
+    aaveUSDCSupplyAPY:  marketDataRaw?.aaveUSDCSupplyAPY  ?? 3.5,
+  };
+
+  console.log("[SENTINEL] Market data (with fallbacks):", marketData);
+
   if (marketData.ethPriceUSD) {
-    priceHistory.push({
-      price: marketData.ethPriceUSD,
-      time: Date.now(),
-    });
-    // Keep last 20 readings
+    priceHistory.push({ price: marketData.ethPriceUSD, time: Date.now() });
     if (priceHistory.length > 20) priceHistory.shift();
   }
 
-  // Calculate price change if we have history
   let priceChange24h = null;
   if (priceHistory.length >= 2) {
     const oldest = priceHistory[0].price;
@@ -67,10 +64,11 @@ Current Conditions:
 - ETH Price: $${marketData.ethPriceUSD}
 - ETH Price Change (session): ${priceChange24h !== null ? priceChange24h.toFixed(2) + "%" : "insufficient data"}
 - Aave USDC APY: ${marketData.aaveUSDCSupplyAPY}%
-- Vault TVL: $${vaultMetrics?.tvl || "unknown"} USDC
+- Vault TVL: $${vaultMetrics?.tvl || "0"} USDC
 - Vault Aave Balance: $${vaultMetrics?.aaveBalance || "0"} USDC
 - Emergency Mode: ${vaultMetrics?.emergencyMode || false}
 - Network: Arbitrum Sepolia
+- Note: Using fallback market data — testnet Chainlink feeds may be inactive
 
 Price History (last ${priceHistory.length} readings):
 ${priceHistory.map(p => `$${p.price.toFixed(2)}`).join(" → ")}
@@ -84,7 +82,6 @@ Return ONLY valid JSON.`;
 
   let emergencyExecuted = false;
 
-  // Execute emergency exit if required
   if (
     assessment.emergencyExitRequired &&
     vaultMetrics &&
@@ -103,7 +100,6 @@ Return ONLY valid JSON.`;
     }
   }
 
-  // Broadcast to dashboard
   if (broadcastFn) {
     broadcastFn({
       agentType: "SENTINEL",
