@@ -117,6 +117,20 @@ Return ONLY valid JSON.`;
     }
   }
 
+  // Always log a cycle completion onchain if vault has funds
+if (totalTVL > 0 && !txHash) {
+  try {
+    const result = await executeLogRebalance(
+      `Cycle complete. TVL: $${totalTVL.toFixed(2)} USDC. Action: ${decision.action}. ${decision.onchainReasoning}`,
+      process.env.AGENT_PRIVATE_KEY
+    )
+    txHash = result.hash
+    console.log(`[ALLOCATOR] Cycle logged onchain. Tx: ${txHash}`)
+  } catch (err) {
+    console.error("[ALLOCATOR] Log error:", err.message)
+  }
+}
+
   // Broadcast to dashboard
   if (broadcastFn) {
     broadcastFn({
