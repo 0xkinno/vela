@@ -20,6 +20,7 @@ Every agent decision is reasoned by a Groq LLM and permanently logged onchain. F
 | **VelaStrategy** | `0x02185363c7d89A98FA5E1f1596a1fe52f5e250ca` |
 | **Network** | Arbitrum Sepolia (Chain ID 421614) |
 | **GitHub** | https://github.com/0xkinno/vela |
+| **Video Demo** | https://youtu.be/MWzBJRRodeQ?si=vk9IWJUIOUxPqRYY |
 | **Track** | Arbitrum Open House London — Best Agentic Project |
 
 ---
