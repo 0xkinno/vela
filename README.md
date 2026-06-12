@@ -169,6 +169,21 @@ Most hackathon DeFi projects show a UI wired to a smart contract. VELA is differ
 
 ---
 
+## Live Agent Activity — Verify It Yourself
+
+Every transaction below was executed autonomously by VELA's AI agents — no human signed these.
+
+🔗 **[View all 55+ autonomous agent transactions on Arbiscan](https://sepolia.arbiscan.io/address/0xaD7E5ACaCc8989850bF27b4Fa25ff4f922106386)**
+
+Each transaction includes:
+- A real onchain method call (`agentLogRebalance`, `agentDeployToAave`)
+- An LLM-generated reasoning string committed permanently to the registry
+- A timestamp showing continuous autonomous operation, not a one-time demo
+
+This is not a simulation. The agent wallet (`0xe98ACBD5...fBB684E7f`) holds no special privileges beyond what's enforced in `VelaAgentRegistry` — it cannot withdraw funds to external addresses, only manage the vault's Aave position within strategy bounds.
+
+---
+
 ## Security Properties
 
 - Agents cannot withdraw to external addresses — vault enforces this onchain
